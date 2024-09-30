@@ -7,16 +7,19 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
 public class DrinkServiceImpl implements DrinkService {
-    @Override
-    public Drink getDrinkById(UUID id) {
-        log.debug("Getting drink by id: " + id.toString()+ "In DrinkServiceImpl");
-        return Drink.builder()
-                .id(id)
+
+    private Map<UUID, Drink> drinkMap;
+
+    public DrinkServiceImpl() {
+        drinkMap = new HashMap<>();
+
+        Drink drink1 = Drink.builder()
+                .id(UUID.randomUUID())
                 .version(1)
                 .drinkName("Kenza")
                 .drinkStyle(DrinkStyle.SOFT_DRINK)
@@ -26,5 +29,44 @@ public class DrinkServiceImpl implements DrinkService {
                 .createdDate(LocalDateTime.now())
                 .updateDate(LocalDateTime.now())
                 .build();
+        Drink drink2 = Drink.builder()
+                .id(UUID.randomUUID())
+                .version(1)
+                .drinkName("Rani")
+                .drinkStyle(DrinkStyle.JUICE)
+                .upc("789654")
+                .price(new BigDecimal("25"))
+                .quantityOnHand(155)
+                .createdDate(LocalDateTime.now())
+                .updateDate(LocalDateTime.now())
+                .build();
+        Drink drink3 = Drink.builder()
+                .id(UUID.randomUUID())
+                .version(1)
+                .drinkName("AL-Maraa'i")
+                .drinkStyle(DrinkStyle.MILK)
+                .upc("654321")
+                .price(new BigDecimal("50"))
+                .quantityOnHand(100)
+                .createdDate(LocalDateTime.now())
+                .updateDate(LocalDateTime.now())
+                .build();
+        drinkMap.put(drink1.getId(), drink1);
+        drinkMap.put(drink2.getId(), drink2);
+        drinkMap.put(drink3.getId(), drink3);
+
+    }
+
+
+    @Override
+    public List<Drink> listDrinks() {
+        return new ArrayList<>(drinkMap.values());
+    }
+
+
+    @Override
+    public Drink getDrinkById(UUID id) {
+        log.debug("Getting drink by id: " + id.toString()+ "In DrinkServiceImpl");
+        return drinkMap.get(id);
     }
 }
