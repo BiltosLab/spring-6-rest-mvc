@@ -4,10 +4,9 @@ import com.biltoslab.spring6restmvc.model.Drink;
 import com.biltoslab.spring6restmvc.services.DrinkService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,6 +17,13 @@ import java.util.UUID;
 @RequestMapping("/api/v1/drink")
 public class DrinkController {
     private final DrinkService drinkService;
+
+    @PostMapping
+    public ResponseEntity<Drink> saveNewDrink(@RequestBody Drink drink) {
+        Drink savedDrink = drinkService.saveNewDrink(drink);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
 
     @RequestMapping(method = RequestMethod.GET)
     public List<Drink> listDrinks() {

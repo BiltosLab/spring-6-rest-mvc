@@ -11,4 +11,5 @@ public interface DrinkService {
     Drink getDrinkById(UUID id);
 
 
+    Drink saveNewDrink(Drink drink);
 }
