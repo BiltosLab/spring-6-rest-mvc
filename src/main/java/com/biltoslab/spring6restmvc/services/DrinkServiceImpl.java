@@ -5,6 +5,7 @@ import com.biltoslab.spring6restmvc.model.Drink;
 import com.biltoslab.spring6restmvc.model.DrinkStyle;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -102,5 +103,28 @@ public class DrinkServiceImpl implements DrinkService {
     @Override
     public void deleteById(UUID id) {
         drinkMap.remove(id);
+    }
+
+    @Override
+    public void PatchDrink(UUID id, Drink drink) {
+        Drink DrinkToPatch = drinkMap.get(id);
+
+        if (StringUtils.hasText(drink.getDrinkName())) {
+            DrinkToPatch.setDrinkName(drink.getDrinkName());
+        }
+        if (StringUtils.hasText(drink.getUpc())) {
+            DrinkToPatch.setUpc(drink.getUpc());
+        }
+        if (drink.getPrice() != null) {
+            DrinkToPatch.setPrice(drink.getPrice());
+        }
+        if (drink.getQuantityOnHand() != null) {
+            DrinkToPatch.setQuantityOnHand(drink.getQuantityOnHand());
+        }
+        if (drink.getDrinkStyle() != null) {
+            DrinkToPatch.setDrinkStyle(drink.getDrinkStyle());
+        }
+        drinkMap.put(id, DrinkToPatch);
+
     }
 }

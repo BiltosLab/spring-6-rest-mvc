@@ -2,6 +2,7 @@ package com.biltoslab.spring6restmvc.services;
 
 import com.biltoslab.spring6restmvc.model.Customer;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -83,5 +84,16 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public void deleteById(UUID id) {
         customers.remove(id);
+    }
+
+    @Override
+    public void PatchCustomerById(UUID id, Customer customer) {
+        Customer customerToPatch = customers.get(id);
+        if (StringUtils.hasText(customer.getCustomerName())) {
+            customerToPatch.setCustomerName(customer.getCustomerName());
+        }
+        customers.put(id,customerToPatch);
+
+
     }
 }
