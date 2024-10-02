@@ -13,4 +13,6 @@ public interface DrinkService {
 
     Drink saveNewDrink(Drink drink);
     void updateDrink(UUID id,Drink drink);
+
+    void deleteById(UUID id);
 }

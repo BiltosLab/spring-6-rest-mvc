@@ -98,4 +98,9 @@ public class DrinkServiceImpl implements DrinkService {
         existingDrink.setPrice(drink.getPrice());
         drinkMap.put(id, existingDrink);
     }
+
+    @Override
+    public void deleteById(UUID id) {
+        drinkMap.remove(id);
+    }
 }
