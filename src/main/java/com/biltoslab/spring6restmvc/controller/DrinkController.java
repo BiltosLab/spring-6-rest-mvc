@@ -4,6 +4,7 @@ import com.biltoslab.spring6restmvc.model.Drink;
 import com.biltoslab.spring6restmvc.services.DrinkService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,9 @@ public class DrinkController {
     @PostMapping
     public ResponseEntity<Drink> saveNewDrink(@RequestBody Drink drink) {
         Drink savedDrink = drinkService.saveNewDrink(drink);
-        return new ResponseEntity<>(HttpStatus.CREATED);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Location", "/api/v1/drink/" + savedDrink.getId().toString());
+        return new ResponseEntity<>(headers,HttpStatus.CREATED);
     }
 
 
