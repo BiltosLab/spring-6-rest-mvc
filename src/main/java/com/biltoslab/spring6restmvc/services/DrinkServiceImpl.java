@@ -87,4 +87,15 @@ public class DrinkServiceImpl implements DrinkService {
 
         return savedDrink;
     }
+
+    @Override
+    public void updateDrink(UUID id, Drink drink) {
+        Drink existingDrink = drinkMap.get(id);
+
+        existingDrink.setDrinkName(drink.getDrinkName());
+        existingDrink.setUpc(drink.getUpc());
+        existingDrink.setQuantityOnHand(drink.getQuantityOnHand());
+        existingDrink.setPrice(drink.getPrice());
+        drinkMap.put(id, existingDrink);
+    }
 }
