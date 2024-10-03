@@ -2,7 +2,7 @@ package com.biltoslab.spring6restmvc.controller;
 
 import com.biltoslab.spring6restmvc.model.Drink;
 import com.biltoslab.spring6restmvc.services.DrinkService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/drink")
 public class DrinkController {
