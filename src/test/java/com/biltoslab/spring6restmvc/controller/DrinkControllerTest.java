@@ -58,7 +58,7 @@ class DrinkControllerTest {
 
 
 
-        mockMvc.perform(patch("/api/v1/drink/"+drink.getId())
+        mockMvc.perform(patch(DrinkController.DRINK_PATH_ID,drink.getId())
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(drinkMap)))
@@ -75,7 +75,7 @@ class DrinkControllerTest {
     void testDeleteDrink() throws Exception {
         Drink drink = drinkServiceImpl.listDrinks().getFirst();
 
-        mockMvc.perform(delete("/api/v1/drink/" + drink.getId())
+        mockMvc.perform(delete(DrinkController.DRINK_PATH_ID,drink.getId())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
 
@@ -88,7 +88,7 @@ class DrinkControllerTest {
     void TestUpdateDrink() throws Exception {
         Drink drink = drinkServiceImpl.listDrinks().getFirst();
 
-        mockMvc.perform(put("/api/v1/drink/" + drink.getId())
+        mockMvc.perform(put(DrinkController.DRINK_PATH_ID,drink.getId())
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(drink)))
@@ -106,7 +106,7 @@ class DrinkControllerTest {
 
         given(drinkService.saveNewDrink(any(Drink.class))).willReturn(drinkServiceImpl.listDrinks().get(1));
 
-        mockMvc.perform(post("/api/v1/drink")
+        mockMvc.perform(post(DrinkController.DRINK_PATH)
                 .accept(MediaType.APPLICATION_JSON)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(drink)))
@@ -120,7 +120,7 @@ class DrinkControllerTest {
     void testListDrinks() throws Exception {
         given(drinkService.listDrinks()).willReturn(drinkServiceImpl.listDrinks());
 
-        mockMvc.perform(get("/api/v1/drink")
+        mockMvc.perform(get(DrinkController.DRINK_PATH)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -131,14 +131,14 @@ class DrinkControllerTest {
 
     @Test
     void getDrinkById() throws Exception {
-        Drink testDrink = drinkServiceImpl.listDrinks().getFirst();
-        given(drinkService.getDrinkById(testDrink.getId())).willReturn(testDrink);
+        Drink drink = drinkServiceImpl.listDrinks().getFirst();
+        given(drinkService.getDrinkById(drink.getId())).willReturn(drink);
 
-        mockMvc.perform(get("/api/v1/drink/" + testDrink.getId())
+        mockMvc.perform(get(DrinkController.DRINK_PATH_ID,drink.getId())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.id",is(testDrink.getId().toString())))
-                .andExpect(jsonPath("$.drinkName",is(testDrink.getDrinkName())));
+                .andExpect(jsonPath("$.id",is(drink.getId().toString())))
+                .andExpect(jsonPath("$.drinkName",is(drink.getDrinkName())));
     }
 }

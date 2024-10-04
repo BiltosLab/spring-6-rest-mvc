@@ -16,32 +16,34 @@ import java.util.UUID;
 @Slf4j
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/api/v1/customer")
 public class CustomerController {
+    public static final String CUSTOMERS_PATH = "/api/v1/customer";
+    public static final String CUSTOMERS_PATH_ID = CUSTOMERS_PATH + "/{customerId}";
+
     private final CustomerService customerService;
 
-    @PatchMapping("{customerId}")
+    @PatchMapping(CUSTOMERS_PATH_ID)
     public ResponseEntity<Customer> PatchCustomerById(@PathVariable("customerId") UUID Id, @RequestBody Customer customer) {
         customerService.PatchCustomerById(Id,customer);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
-    @DeleteMapping("{customerId}")
+    @DeleteMapping(CUSTOMERS_PATH_ID)
     public ResponseEntity<Customer> deleteCustomer(@PathVariable("customerId") UUID Id) {
         customerService.deleteById(Id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
-    @PutMapping("{customerId}")
+    @PutMapping(CUSTOMERS_PATH_ID)
     public ResponseEntity<Customer> updateCustomer(@PathVariable("customerId") UUID Id, @RequestBody Customer customer) {
         customerService.updateCustomer(Id, customer);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
-    @PostMapping
+    @PostMapping(CUSTOMERS_PATH)
     public ResponseEntity<Customer> NewCustomer(@RequestBody Customer customer) {
         Customer savedCustomer = customerService.NewCustomer(customer);
         HttpHeaders headers = new HttpHeaders();
@@ -50,11 +52,11 @@ public class CustomerController {
     }
 
 
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping(CUSTOMERS_PATH)
     public List<Customer> getAllCustomers() {
         return customerService.listCustomers();
     }
-    @RequestMapping(value = "{customerId}",method = RequestMethod.GET)
+    @GetMapping(CUSTOMERS_PATH_ID)
     public Customer getCustomerById(@PathVariable("customerId") UUID customerId) {
         return customerService.getCustomerById(customerId);
     }
