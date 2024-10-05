@@ -1,6 +1,5 @@
 package com.biltoslab.spring6restmvc.services;
 
-import com.biltoslab.spring6restmvc.controller.DrinkController;
 import com.biltoslab.spring6restmvc.model.Drink;
 import com.biltoslab.spring6restmvc.model.DrinkStyle;
 import lombok.extern.slf4j.Slf4j;
@@ -67,9 +66,9 @@ public class DrinkServiceImpl implements DrinkService {
 
 
     @Override
-    public Drink getDrinkById(UUID id) {
+    public Optional<Drink> getDrinkById(UUID id) {
         log.debug("Getting drink by id: " + id.toString()+ "In DrinkServiceImpl");
-        return drinkMap.get(id);
+        return Optional.of(drinkMap.get(id));
     }
 
     @Override

@@ -49,6 +49,7 @@ public class DrinkController {
     }
 
 
+
     @GetMapping(DRINK_PATH)
     public List<Drink> listDrinks() {
         return drinkService.listDrinks();
@@ -57,6 +58,6 @@ public class DrinkController {
     @GetMapping(DRINK_PATH_ID)
     public Drink getDrinkById(@PathVariable("drinkId") UUID drinkId) {
         log.debug("Getting drink by id: {} In DrinkController", drinkId.toString());
-        return drinkService.getDrinkById(drinkId);
+        return drinkService.getDrinkById(drinkId).orElseThrow(NotFoundException::new);
     }
 }
