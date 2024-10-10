@@ -1,6 +1,6 @@
 package com.biltoslab.spring6restmvc.services;
 
-import com.biltoslab.spring6restmvc.model.Customer;
+import com.biltoslab.spring6restmvc.model.CustomerDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -11,12 +11,12 @@ import java.util.*;
 @Service
 public class CustomerServiceImpl implements CustomerService {
 
-    private Map<UUID,Customer> customers;
+    private Map<UUID, CustomerDTO> customers;
 
     public CustomerServiceImpl() {
         customers = new HashMap<>();
 
-        Customer customer1 = Customer
+        CustomerDTO customer1 = CustomerDTO
                 .builder()
                 .id(UUID.randomUUID())
                 .customerName("Mohammad")
@@ -24,7 +24,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .createdDate(LocalDateTime.now())
                 .lastModifiedDate(LocalDateTime.now())
                 .build();
-        Customer customer2 = Customer
+        CustomerDTO customer2 = CustomerDTO
                 .builder()
                 .id(UUID.randomUUID())
                 .customerName("Hamza")
@@ -32,7 +32,7 @@ public class CustomerServiceImpl implements CustomerService {
                 .createdDate(LocalDateTime.now())
                 .lastModifiedDate(LocalDateTime.now())
                 .build();
-        Customer customer3 = Customer
+        CustomerDTO customer3 = CustomerDTO
                 .builder()
                 .id(UUID.randomUUID())
                 .customerName("Mustafa")
@@ -49,18 +49,18 @@ public class CustomerServiceImpl implements CustomerService {
 
 
     @Override
-    public List<Customer> listCustomers() {
-        return new ArrayList<Customer>(customers.values());
+    public List<CustomerDTO> listCustomers() {
+        return new ArrayList<CustomerDTO>(customers.values());
     }
 
     @Override
-    public Optional<Customer> getCustomerById(UUID id) {
+    public Optional<CustomerDTO> getCustomerById(UUID id) {
         return Optional.of(customers.get(id));
     }
 
     @Override
-    public Customer NewCustomer(Customer customer){
-        Customer savedCustomer = Customer
+    public CustomerDTO NewCustomer(CustomerDTO customer){
+        CustomerDTO savedCustomer = CustomerDTO
                 .builder()
                 .id(UUID.randomUUID())
                 .customerName(customer.getCustomerName())
@@ -74,8 +74,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void updateCustomer(UUID id, Customer customer) {
-        Customer existingCustomer = customers.get(id);
+    public void updateCustomer(UUID id, CustomerDTO customer) {
+        CustomerDTO existingCustomer = customers.get(id);
         existingCustomer.setCustomerName(customer.getCustomerName());
         customers.put(id,existingCustomer);
 
@@ -87,8 +87,8 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void PatchCustomerById(UUID id, Customer customer) {
-        Customer customerToPatch = customers.get(id);
+    public void PatchCustomerById(UUID id, CustomerDTO customer) {
+        CustomerDTO customerToPatch = customers.get(id);
         if (StringUtils.hasText(customer.getCustomerName())) {
             customerToPatch.setCustomerName(customer.getCustomerName());
         }

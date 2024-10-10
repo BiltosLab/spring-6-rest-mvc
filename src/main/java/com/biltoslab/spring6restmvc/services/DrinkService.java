@@ -1,21 +1,21 @@
 package com.biltoslab.spring6restmvc.services;
 
-import com.biltoslab.spring6restmvc.model.Drink;
+import com.biltoslab.spring6restmvc.model.DrinkDTO;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface DrinkService {
-    List<Drink> listDrinks();
+    List<DrinkDTO> listDrinks();
 
-    Optional<Drink> getDrinkById(UUID id);
+    Optional<DrinkDTO> getDrinkById(UUID id);
 
 
-    Drink saveNewDrink(Drink drink);
-    void updateDrink(UUID id,Drink drink);
+    DrinkDTO saveNewDrink(DrinkDTO drink);
+    void updateDrink(UUID id, DrinkDTO drink);
 
     void deleteById(UUID id);
 
-    void PatchDrink(UUID id, Drink drink);
+    void PatchDrink(UUID id, DrinkDTO drink);
 }

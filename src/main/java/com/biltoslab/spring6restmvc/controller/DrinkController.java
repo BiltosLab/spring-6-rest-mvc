@@ -1,6 +1,6 @@
 package com.biltoslab.spring6restmvc.controller;
 
-import com.biltoslab.spring6restmvc.model.Drink;
+import com.biltoslab.spring6restmvc.model.DrinkDTO;
 import com.biltoslab.spring6restmvc.services.DrinkService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,28 +21,28 @@ public class DrinkController {
     public static final String DRINK_PATH_ID = DRINK_PATH + "/{drinkId}";
 
     @PatchMapping(DRINK_PATH_ID)
-    public ResponseEntity<Drink> PatchDrink(@PathVariable("drinkId") UUID Id, @RequestBody Drink drink) {
+    public ResponseEntity<DrinkDTO> PatchDrink(@PathVariable("drinkId") UUID Id, @RequestBody DrinkDTO drink) {
         drinkService.PatchDrink(Id,drink);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
     @DeleteMapping(DRINK_PATH_ID)
-    public ResponseEntity<Drink> deleteDrink(@PathVariable("drinkId") UUID Id) {
+    public ResponseEntity<DrinkDTO> deleteDrink(@PathVariable("drinkId") UUID Id) {
         drinkService.deleteById(Id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping(DRINK_PATH_ID)
-    public ResponseEntity<Drink> UpdateDrink(@PathVariable("drinkId") UUID Id,@RequestBody Drink drink) {
+    public ResponseEntity<DrinkDTO> UpdateDrink(@PathVariable("drinkId") UUID Id, @RequestBody DrinkDTO drink) {
         drinkService.updateDrink(Id, drink);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
     @PostMapping(DRINK_PATH)
-    public ResponseEntity<Drink> saveNewDrink(@RequestBody Drink drink) {
-        Drink savedDrink = drinkService.saveNewDrink(drink);
+    public ResponseEntity<DrinkDTO> saveNewDrink(@RequestBody DrinkDTO drink) {
+        DrinkDTO savedDrink = drinkService.saveNewDrink(drink);
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/api/v1/drink/" + savedDrink.getId().toString());
         return new ResponseEntity<>(headers,HttpStatus.CREATED);
@@ -51,12 +51,12 @@ public class DrinkController {
 
 
     @GetMapping(DRINK_PATH)
-    public List<Drink> listDrinks() {
+    public List<DrinkDTO> listDrinks() {
         return drinkService.listDrinks();
     }
 
     @GetMapping(DRINK_PATH_ID)
-    public Drink getDrinkById(@PathVariable("drinkId") UUID drinkId) {
+    public DrinkDTO getDrinkById(@PathVariable("drinkId") UUID drinkId) {
         log.debug("Getting drink by id: {} In DrinkController", drinkId.toString());
         return drinkService.getDrinkById(drinkId).orElseThrow(NotFoundException::new);
     }

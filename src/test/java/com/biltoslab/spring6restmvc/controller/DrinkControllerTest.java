@@ -1,9 +1,8 @@
 package com.biltoslab.spring6restmvc.controller;
 
-import com.biltoslab.spring6restmvc.model.Drink;
+import com.biltoslab.spring6restmvc.model.DrinkDTO;
 import com.biltoslab.spring6restmvc.services.DrinkService;
 import com.biltoslab.spring6restmvc.services.DrinkServiceImpl;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -46,13 +45,13 @@ class DrinkControllerTest {
     @Captor
     ArgumentCaptor<UUID> argumentCaptor;
     @Captor
-    ArgumentCaptor<Drink> drinkArgumentCaptor;
+    ArgumentCaptor<DrinkDTO> drinkArgumentCaptor;
     @Autowired
     ObjectMapper objectMapper;
 
     @Test
     void testPatchDrink() throws Exception {
-        Drink drink = drinkServiceImpl.listDrinks().getFirst();
+        DrinkDTO drink = drinkServiceImpl.listDrinks().getFirst();
 
         Map<String,Object> drinkMap = new HashMap<>();
         drinkMap.put("drinkName","New Name");
@@ -74,7 +73,7 @@ class DrinkControllerTest {
 
     @Test
     void testDeleteDrink() throws Exception {
-        Drink drink = drinkServiceImpl.listDrinks().getFirst();
+        DrinkDTO drink = drinkServiceImpl.listDrinks().getFirst();
 
         mockMvc.perform(delete(DrinkController.DRINK_PATH_ID,drink.getId())
                 .accept(MediaType.APPLICATION_JSON))
@@ -87,7 +86,7 @@ class DrinkControllerTest {
 
     @Test
     void TestUpdateDrink() throws Exception {
-        Drink drink = drinkServiceImpl.listDrinks().getFirst();
+        DrinkDTO drink = drinkServiceImpl.listDrinks().getFirst();
 
         mockMvc.perform(put(DrinkController.DRINK_PATH_ID,drink.getId())
                 .accept(MediaType.APPLICATION_JSON)
@@ -95,17 +94,17 @@ class DrinkControllerTest {
                 .content(objectMapper.writeValueAsString(drink)))
                 .andExpect(status().isNoContent());
 
-        verify(drinkService).updateDrink(any(UUID.class), any(Drink.class));
+        verify(drinkService).updateDrink(any(UUID.class), any(DrinkDTO.class));
 
     }
 
     @Test
     void TestCreateDrink() throws Exception {
-        Drink drink = drinkServiceImpl.listDrinks().getFirst();
+        DrinkDTO drink = drinkServiceImpl.listDrinks().getFirst();
         drink.setId(null);
         drink.setVersion(null);
 
-        given(drinkService.saveNewDrink(any(Drink.class))).willReturn(drinkServiceImpl.listDrinks().get(1));
+        given(drinkService.saveNewDrink(any(DrinkDTO.class))).willReturn(drinkServiceImpl.listDrinks().get(1));
 
         mockMvc.perform(post(DrinkController.DRINK_PATH)
                 .accept(MediaType.APPLICATION_JSON)
@@ -139,7 +138,7 @@ class DrinkControllerTest {
 
     @Test
     void getDrinkById() throws Exception {
-        Drink drink = drinkServiceImpl.listDrinks().getFirst();
+        DrinkDTO drink = drinkServiceImpl.listDrinks().getFirst();
         given(drinkService.getDrinkById(drink.getId())).willReturn(Optional.of(drink));
 
         mockMvc.perform(get(DrinkController.DRINK_PATH_ID,drink.getId())
