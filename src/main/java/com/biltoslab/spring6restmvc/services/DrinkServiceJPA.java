@@ -39,12 +39,19 @@ public class DrinkServiceJPA implements DrinkService {
     }
 
     @Override
-    public DrinkDTO saveNewDrink(DrinkDTO drink) {
-        return null;
+    public DrinkDTO saveNewDrink(DrinkDTO drinkdto) {
+        return drinkMapper.DrinkToDrinkDTO(drinkRepository.save(drinkMapper.DrinkDTOToDrink(drinkdto)));
     }
 
     @Override
     public void updateDrink(UUID id, DrinkDTO drink) {
+        drinkRepository.findById(id).ifPresent(foundDrink -> {
+            foundDrink.setDrinkName(drink.getDrinkName());
+            foundDrink.setDrinkStyle(drink.getDrinkStyle());
+            foundDrink.setPrice(drink.getPrice());
+            foundDrink.setUpc(drink.getUpc());
+            drinkRepository.save(foundDrink);
+        });
 
     }
 

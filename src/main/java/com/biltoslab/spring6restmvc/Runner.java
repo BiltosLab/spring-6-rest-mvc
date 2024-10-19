@@ -22,8 +22,9 @@ public class Runner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Customer customer1 = Customer.builder().customerName("Ahmad").build();
-        Customer customer2 = Customer.builder().customerName("Jafaar").build();
+        System.out.println("Filling Data");
+        Customer customer1 = Customer.builder().customerName("Marah").build();
+        Customer customer2 = Customer.builder().customerName("Hadeel").build();
         Customer customer3 = Customer.builder().customerName("Mustafa").build();
         Drink drink1 = Drink.builder().drinkName("Kenza").drinkStyle(DrinkStyle.SOFT_DRINK).quantityOnHand(33).upc("10100").build();
         Drink drink2 = Drink.builder().drinkName("Cola").drinkStyle(DrinkStyle.SOFT_DRINK).quantityOnHand(11).upc("120").build();
@@ -32,6 +33,7 @@ public class Runner implements CommandLineRunner {
         customerRepository.save(customer1);
         customerRepository.save(customer2);
         customerRepository.save(customer3);
+        System.out.println("SIZE OF CUSTOMERS " + customerRepository.count());
         drinkRepository.save(drink1);
         drinkRepository.save(drink2);
         drinkRepository.save(drink3);
