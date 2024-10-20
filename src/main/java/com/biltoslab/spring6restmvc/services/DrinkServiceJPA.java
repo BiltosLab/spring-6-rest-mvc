@@ -6,10 +6,12 @@ import com.biltoslab.spring6restmvc.repository.DrinkRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 
@@ -44,24 +46,59 @@ public class DrinkServiceJPA implements DrinkService {
     }
 
     @Override
-    public void updateDrink(UUID id, DrinkDTO drink) {
-        drinkRepository.findById(id).ifPresent(foundDrink -> {
+    public Optional<DrinkDTO> updateDrink(UUID id, DrinkDTO drink) {
+        AtomicReference<Optional<DrinkDTO>> atomicReference = new AtomicReference<>();
+
+        drinkRepository.findById(id).ifPresentOrElse(foundDrink -> {
             foundDrink.setDrinkName(drink.getDrinkName());
             foundDrink.setDrinkStyle(drink.getDrinkStyle());
             foundDrink.setPrice(drink.getPrice());
             foundDrink.setUpc(drink.getUpc());
-            drinkRepository.save(foundDrink);
-        });
+            foundDrink.setQuantityOnHand(drink.getQuantityOnHand());
 
+            atomicReference.set(Optional.of(drinkMapper.DrinkToDrinkDTO(drinkRepository.save(foundDrink))));
+        }, () -> atomicReference.set(Optional.empty()));
+        return atomicReference.get();
     }
 
     @Override
-    public void deleteById(UUID id) {
-
+    public Boolean deleteById(UUID id) {
+        if (drinkRepository.existsById(id)) {
+            drinkRepository.deleteById(id);
+            return true;
+        }
+            return false;
     }
 
     @Override
-    public void PatchDrink(UUID id, DrinkDTO drink) {
+    public Optional<DrinkDTO> PatchDrink(UUID id, DrinkDTO drink) {
+        AtomicReference<Optional<DrinkDTO>> atomicReference = new AtomicReference<>();
 
+        drinkRepository.findById(id).ifPresentOrElse(foundDrink -> {
+            if (StringUtils.hasText(drink.getDrinkName())) {
+                foundDrink.setDrinkName(drink.getDrinkName());
+            }
+            if (drink.getDrinkStyle() != null) {
+                foundDrink.setDrinkStyle(drink.getDrinkStyle());
+            }
+            if (drink.getPrice() != null) {
+            foundDrink.setPrice(drink.getPrice());
+            }
+            if (StringUtils.hasText(drink.getUpc())) {
+            foundDrink.setUpc(drink.getUpc());
+            }
+            if (drink.getQuantityOnHand() != null) {
+                foundDrink.setQuantityOnHand(drink.getQuantityOnHand());
+            }
+            if (drink.getDrinkStyle() != null) {
+                foundDrink.setDrinkStyle(drink.getDrinkStyle());
+            }
+            atomicReference.set(Optional.of(drinkMapper.DrinkToDrinkDTO(drinkRepository.save(foundDrink))));
+        }, () -> atomicReference.set(Optional.empty()));
+        return atomicReference.get();
     }
 }
+
+
+
+

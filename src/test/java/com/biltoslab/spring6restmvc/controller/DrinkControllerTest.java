@@ -52,6 +52,7 @@ class DrinkControllerTest {
     @Test
     void testPatchDrink() throws Exception {
         DrinkDTO drink = drinkServiceImpl.listDrinks().getFirst();
+        given(drinkService.PatchDrink(any(),any())).willReturn(Optional.of(drink));
 
         Map<String,Object> drinkMap = new HashMap<>();
         drinkMap.put("drinkName","New Name");
@@ -74,7 +75,7 @@ class DrinkControllerTest {
     @Test
     void testDeleteDrink() throws Exception {
         DrinkDTO drink = drinkServiceImpl.listDrinks().getFirst();
-
+        given(drinkService.deleteById(any())).willReturn(true);
         mockMvc.perform(delete(DrinkController.DRINK_PATH_ID,drink.getId())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
@@ -87,6 +88,7 @@ class DrinkControllerTest {
     @Test
     void TestUpdateDrink() throws Exception {
         DrinkDTO drink = drinkServiceImpl.listDrinks().getFirst();
+        given(drinkService.updateDrink(any(),any())).willReturn(Optional.of(drink));
 
         mockMvc.perform(put(DrinkController.DRINK_PATH_ID,drink.getId())
                 .accept(MediaType.APPLICATION_JSON)

@@ -13,9 +13,9 @@ public interface DrinkService {
 
 
     DrinkDTO saveNewDrink(DrinkDTO drink);
-    void updateDrink(UUID id, DrinkDTO drink);
+    Optional<DrinkDTO> updateDrink(UUID id, DrinkDTO drink);
 
-    void deleteById(UUID id);
+    Boolean deleteById(UUID id);
 
-    void PatchDrink(UUID id, DrinkDTO drink);
+    Optional<DrinkDTO> PatchDrink(UUID id, DrinkDTO drink);
 }

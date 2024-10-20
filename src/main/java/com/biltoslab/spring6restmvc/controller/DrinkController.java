@@ -22,20 +22,26 @@ public class DrinkController {
 
     @PatchMapping(DRINK_PATH_ID)
     public ResponseEntity<DrinkDTO> PatchDrink(@PathVariable("drinkId") UUID Id, @RequestBody DrinkDTO drink) {
-        drinkService.PatchDrink(Id,drink);
+        if (drinkService.PatchDrink(Id,drink).isEmpty()){
+            throw new NotFoundException();
+        }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 
     @DeleteMapping(DRINK_PATH_ID)
     public ResponseEntity<DrinkDTO> deleteDrink(@PathVariable("drinkId") UUID Id) {
-        drinkService.deleteById(Id);
+        if (!drinkService.deleteById(Id)){
+            throw new NotFoundException();
+        }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PutMapping(DRINK_PATH_ID)
     public ResponseEntity<DrinkDTO> UpdateDrink(@PathVariable("drinkId") UUID Id, @RequestBody DrinkDTO drink) {
-        drinkService.updateDrink(Id, drink);
+        if ( drinkService.updateDrink(Id, drink).isEmpty()){
+            throw new NotFoundException();
+        };
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

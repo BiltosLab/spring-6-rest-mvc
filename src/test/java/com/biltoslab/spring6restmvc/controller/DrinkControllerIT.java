@@ -32,6 +32,51 @@ class DrinkControllerIT {
     @Autowired
     DrinkMapper drinkMapper;
 
+    @Rollback
+    @Transactional
+    @Test
+    void PatchDrink() {
+        Drink drink = drinkRepository.findAll().getFirst();
+        DrinkDTO drinkDTO = drinkMapper.DrinkToDrinkDTO(drink);
+        drinkDTO.setId(null);
+        drinkDTO.setVersion(null);
+        final String name = "UPDATED DRINK";
+        drinkDTO.setDrinkName(name);
+
+        ResponseEntity<DrinkDTO> responseEntity = drinkController.PatchDrink(drink.getId(),drinkDTO);
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.valueOf(204));
+
+        Drink updatedDrink = drinkRepository.findById(drink.getId()).get();
+        assertThat(updatedDrink.getDrinkName()).isEqualTo(name);
+
+
+    }
+    @Test
+    void PatchDrinkNotFound(){
+        assertThrows(NotFoundException.class, ()->{
+            drinkController.PatchDrink(UUID.randomUUID(),DrinkDTO.builder().build());
+        });
+    }
+
+    @Test
+    void TestDeleteDrinkNotFound(){
+        assertThrows(NotFoundException.class, ()->{
+            drinkController.deleteDrink(UUID.randomUUID());
+        });
+    }
+
+    @Rollback
+    @Transactional
+    @Test
+    void TestDeleteDrinkFound() {
+        Drink drink = drinkRepository.findAll().getFirst();
+        ResponseEntity<DrinkDTO> responseEntity = drinkController.deleteDrink(drink.getId());
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.valueOf(204));
+        assertThat(drinkRepository.findById(drink.getId()).isEmpty());
+    }
+
+    @Rollback
+    @Transactional
     @Test
     void updateDrink() {
         Drink drink = drinkRepository.findAll().getFirst();
@@ -48,6 +93,12 @@ class DrinkControllerIT {
         assertThat(updatedDrink.getDrinkName()).isEqualTo(name);
 
 
+    }
+    @Test
+    void UpdateNotFound(){
+        assertThrows(NotFoundException.class, ()->{
+            drinkController.UpdateDrink(UUID.randomUUID(),DrinkDTO.builder().build());
+        });
     }
 
     @Rollback
