@@ -1,5 +1,7 @@
 package com.biltoslab.spring6restmvc.model;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,6 +15,8 @@ import java.util.UUID;
 public class DrinkDTO {
     private UUID id;
     private Integer version;
+    @NotNull
+    @NotBlank
     private String drinkName;
     private DrinkStyle drinkStyle;
     private String upc;

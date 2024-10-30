@@ -1,5 +1,6 @@
 package com.biltoslab.spring6restmvc.controller;
 
+import com.biltoslab.spring6restmvc.entities.Drink;
 import com.biltoslab.spring6restmvc.model.DrinkDTO;
 import com.biltoslab.spring6restmvc.services.DrinkService;
 import com.biltoslab.spring6restmvc.services.DrinkServiceImpl;
@@ -13,6 +14,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -99,7 +101,20 @@ class DrinkControllerTest {
         verify(drinkService).updateDrink(any(UUID.class), any(DrinkDTO.class));
 
     }
+    @Test
+    void TestCreateDrinkNull() throws Exception {
+        DrinkDTO drink = DrinkDTO.builder().build();
 
+        given(drinkService.saveNewDrink(any(DrinkDTO.class))).willReturn(drinkServiceImpl.listDrinks().get(1));
+
+       MvcResult mvcResult = mockMvc.perform(post(DrinkController.DRINK_PATH)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(drink)))
+                .andExpect(status().isBadRequest()).andReturn();
+        System.out.println(mvcResult.getResponse().getContentAsString());
+
+    }
     @Test
     void TestCreateDrink() throws Exception {
         DrinkDTO drink = drinkServiceImpl.listDrinks().getFirst();
