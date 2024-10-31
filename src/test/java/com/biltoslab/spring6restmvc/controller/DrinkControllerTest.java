@@ -86,7 +86,21 @@ class DrinkControllerTest {
 
         assertThat(drink.getId()).isEqualTo(argumentCaptor.getValue());
     }
+    @Test
+    void TestUpdateDrinkBlankName() throws Exception {
+        DrinkDTO drink = drinkServiceImpl.listDrinks().getFirst();
+        drink.setDrinkName("");
+        given(drinkService.updateDrink(any(),any())).willReturn(Optional.of(drink));
 
+        mockMvc.perform(put(DrinkController.DRINK_PATH_ID,drink.getId())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(drink)))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.length()",is(1)));
+
+
+    }
     @Test
     void TestUpdateDrink() throws Exception {
         DrinkDTO drink = drinkServiceImpl.listDrinks().getFirst();
@@ -111,6 +125,7 @@ class DrinkControllerTest {
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(drink)))
+               .andExpect(jsonPath("$.length()",is(6)))
                 .andExpect(status().isBadRequest()).andReturn();
         System.out.println(mvcResult.getResponse().getContentAsString());
 

@@ -18,9 +18,14 @@ public class DrinkDTO {
     @NotNull
     @NotBlank
     private String drinkName;
+    @NotNull
     private DrinkStyle drinkStyle;
+
+    @NotBlank
+    @NotNull
     private String upc;
     private Integer quantityOnHand;
+    @NotNull
     private BigDecimal price;
     private LocalDateTime createdDate;
     private LocalDateTime updateDate;

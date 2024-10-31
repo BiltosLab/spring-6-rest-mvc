@@ -39,7 +39,7 @@ public class DrinkController {
     }
 
     @PutMapping(DRINK_PATH_ID)
-    public ResponseEntity<DrinkDTO> UpdateDrink(@PathVariable("drinkId") UUID Id, @RequestBody DrinkDTO drink) {
+    public ResponseEntity<DrinkDTO> UpdateDrink(@PathVariable("drinkId") UUID Id,  @Validated @RequestBody DrinkDTO drink) {
         if ( drinkService.updateDrink(Id, drink).isEmpty()){
             throw new NotFoundException();
         };

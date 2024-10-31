@@ -10,6 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 @RequiredArgsConstructor
 @Component
 public class Runner implements CommandLineRunner {
@@ -26,10 +29,16 @@ public class Runner implements CommandLineRunner {
         Customer customer1 = Customer.builder().customerName("Marah").build();
         Customer customer2 = Customer.builder().customerName("Hadeel").build();
         Customer customer3 = Customer.builder().customerName("Mustafa").build();
-        Drink drink1 = Drink.builder().drinkName("Kenza").drinkStyle(DrinkStyle.SOFT_DRINK).quantityOnHand(33).upc("10100").build();
-        Drink drink2 = Drink.builder().drinkName("Cola").drinkStyle(DrinkStyle.SOFT_DRINK).quantityOnHand(11).upc("120").build();
-        Drink drink3 = Drink.builder().drinkName("Matrix").drinkStyle(DrinkStyle.SOFT_DRINK).quantityOnHand(99).upc("1030").build();
-
+        Drink drink1 = Drink.builder().drinkName("Kenza").drinkStyle(DrinkStyle.SOFT_DRINK).quantityOnHand(33).upc("10100").price(new BigDecimal("11.99"))
+                .createdDate(LocalDateTime.now())
+                .updateDate(LocalDateTime.now())
+                .build();
+        Drink drink2 = Drink.builder().drinkName("Cola").drinkStyle(DrinkStyle.SOFT_DRINK).quantityOnHand(11).upc("120").price(new BigDecimal("11.99"))
+                .createdDate(LocalDateTime.now())
+                .updateDate(LocalDateTime.now()).build();
+        Drink drink3 = Drink.builder().drinkName("Matrix").drinkStyle(DrinkStyle.SOFT_DRINK).quantityOnHand(99).upc("1030").price(new BigDecimal("11.99"))
+                .createdDate(LocalDateTime.now())
+                .updateDate(LocalDateTime.now()).build();
         customerRepository.save(customer1);
         customerRepository.save(customer2);
         customerRepository.save(customer3);
