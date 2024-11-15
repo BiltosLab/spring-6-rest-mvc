@@ -9,7 +9,11 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.hibernate.annotations.UuidGenerator;
+import org.hibernate.type.SqlTypes;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -24,7 +28,8 @@ import java.util.UUID;
 public class Drink {
     @Id
     @UuidGenerator
-    @Column(length = 36, nullable = false,columnDefinition = "varchar",updatable = false)
+    @JdbcTypeCode(SqlTypes.CHAR)
+    @Column(length = 36, nullable = false,columnDefinition = "varchar(36)",updatable = false)
     private UUID id;
     @Version
     private Integer version;
@@ -42,6 +47,8 @@ public class Drink {
     private Integer quantityOnHand;
     @NotNull
     private BigDecimal price;
+    @CreationTimestamp
     private LocalDateTime createdDate;
+    @UpdateTimestamp
     private LocalDateTime updateDate;
 }
